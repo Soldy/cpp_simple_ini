@@ -11,57 +11,59 @@
 
 namespace simple_ini_tool{
 struct ini_line {
-    bool success ;
+    bool success = false;
     std::string key;
     std::string value;
 };
 
-void ltrim(std::string &s) {
-    s.erase(
-      s.begin(),
+bool spaceCheck(char c){
+    return !std::isspace(c);
+};
+
+void leftTrim(std::string &input_) {
+    input_.erase(
+      input_.begin(),
       std::find_if(
-        s.begin(),
-        s.end(), 
-        [](char c) {
-            return !std::isspace(c);
-        }
+        input_.begin(),
+        input_.end(), 
+        spaceCheck
       )
     );
 };
 
-void rtrim(std::string &s) {
-    s.erase(
+void rightTrim(std::string &input_) {
+    input_.erase(
       std::find_if(
-        s.rbegin(), 
-        s.rend(),
-        [](char c) {
-           return !std::isspace(c);
-        }
+        input_.rbegin(), 
+        input_.rend(),
+        spaceCheck
       ).base(), 
-      s.end()
+      input_.end()
     );
 };
 
-void trim(std::string &s) {
-    rtrim(s);
-    ltrim(s);
+void trim(std::string &input_) {
+    rightTrim(input_);
+    leftTrim(input_);
 };
 
-
-ini_line splitter (std::string input_){
+ini_line splitter (std::string &input_){
     ini_line out;
-    out.success = false;
-    for(int i = 0; input_.size() > i ; i++){
-        if(out.success == true){
-            out.value += input_[i];
-        }else{
-            if(input_[i] == '='){
-                out.success = true;
-            }else{
-                out.key += input_[i];
-            }
-        }
-    };
+    int i;
+    int size = input_.size();
+    if(
+      input_[0] == '=' &&
+      input_[0] == '#' &&
+      input_[0] == '['
+    )
+         return out;
+    for(i = 0; size > i ; i++)
+        if(input_[i] == '=')
+           break;
+    if (i == size)
+        return out;
+    out.key = input_.substr(0,i-1);
+    out.value = input_.substr(i+1,size);
     trim(out.key);
     trim(out.value);
     return out;
@@ -73,13 +75,13 @@ std::map<std::string, std::string> read (std::string file_name){
     ini_line one;
     std::ifstream ini_file;
     ini_file.open(file_name);
-    while(getline(ini_file, line)) {
+    while(getline(ini_file, line)){
         one = splitter(line);
         if(one.success == true)
             out[one.key] = one.value;
     }
     return out;
-}
+};
 }
 
 #endif
