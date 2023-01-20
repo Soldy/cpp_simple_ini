@@ -49,14 +49,15 @@ void trim(std::string &input_) {
 
 ini_line splitter (std::string &input_){
     ini_line out;
+    int size = input_.size();
     if(
-      input_[0] == '=' &&
-      input_[0] == '#' &&
+      1 > size         ||
+      input_[0] == '=' ||
+      input_[0] == '#' ||
       input_[0] == '['
     )
          return out;
     int i;
-    int size = input_.size();
     for(i = 0; size > i ; i++)
         if(input_[i] == '=')
            break;
@@ -65,9 +66,8 @@ ini_line splitter (std::string &input_){
         out.value = input_.substr(i+1,size);
         trim(out.key);
         trim(out.value);
+        out.success = true;
     }
-    delete (i);
-    delete (size);
     return out;
 };
 
@@ -82,9 +82,6 @@ std::map<std::string, std::string> read (std::string file_name){
         if(one.success == true)
             out[one.key] = one.value;
     }
-    delete (line);
-    delete (one);
-    delete (ini_file);
     return out;
 };
 }
