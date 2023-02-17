@@ -1,9 +1,11 @@
 # Simple ini
 
-It's a file reader without section support. 
-The result of the readers comes back as a map with two strings.
+
+It's a simple ini file reader without section support. 
+The reader's function comes back with a map of two strings.
 Sometimes you don't need more.
-Work with a simple function:
+
+# Simple function:
 
 ```C++
 
@@ -23,4 +25,4 @@ Other well-tested solutions already exist on your system:
    1. On a server have multiple options like: libconfini, iniparser, inih, inipp
 
 
-But a good choice for arduino. 
+A good choice for Arduino. 
