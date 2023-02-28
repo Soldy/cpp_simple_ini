@@ -9,7 +9,7 @@ Sometimes you don't need more.
 
 ```C++
 
-std::map cpp_simple_ini::read(std::string file_name);
+std::map<std::sting, std::string> cpp_simple_ini::read(std::string file_name);
 
 ```
 
