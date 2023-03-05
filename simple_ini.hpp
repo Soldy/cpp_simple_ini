@@ -1,3 +1,6 @@
+#ifndef __CPP_JUST_TRIM_HPP_
+#error "Just trim is not included. Please include just_trim.hpp. https://github.com/Soldy/cpp_just_trim "
+#endif
 #ifndef __CPP_SIMPLE_INI_HPP_
 #define __CPP_SIMPLE_INI_HPP_
 #include <algorithm> 
@@ -15,38 +18,6 @@ struct ini_line {
     std::string key;
     std::string value;
 };
-
-bool spaceCheck(char c){
-    return !std::isspace(c);
-};
-
-void leftTrim(std::string &input_) {
-    input_.erase(
-      input_.begin(),
-      std::find_if(
-        input_.begin(),
-        input_.end(), 
-        spaceCheck
-      )
-    );
-};
-
-void rightTrim(std::string &input_) {
-    input_.erase(
-      std::find_if(
-        input_.rbegin(), 
-        input_.rend(),
-        spaceCheck
-      ).base(), 
-      input_.end()
-    );
-};
-
-void trim(std::string &input_) {
-    rightTrim(input_);
-    leftTrim(input_);
-};
-
 ini_line splitter (std::string &input_){
     ini_line out;
     int size = input_.size();
@@ -64,8 +35,8 @@ ini_line splitter (std::string &input_){
     if (i != size){
         out.key = input_.substr(0,i-1);
         out.value = input_.substr(i+1,size);
-        trim(out.key);
-        trim(out.value);
+        just_trim::trim(out.key);
+        just_trim::trim(out.value);
         out.success = true;
     }
     return out;
@@ -77,6 +48,11 @@ std::map<std::string, std::string> read (std::string file_name){
     ini_line one;
     std::ifstream ini_file;
     ini_file.open(file_name);
+    if(!ini_file.is_open()){
+        throw std::runtime_error(
+            std::string("File not opened : "+file_name)
+        );
+    }
     while(getline(ini_file, line)){
         one = splitter(line);
         if(one.success == true)

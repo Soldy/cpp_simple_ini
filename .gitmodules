@@ -1,0 +1,3 @@
+[submodule "subs/trim"]
+	path = subs/trim
+	url = git@github.com:Soldy/cpp_just_trim.git
