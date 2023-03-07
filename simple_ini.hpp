@@ -1,6 +1,6 @@
 #ifndef __CPP_JUST_TRIM_HPP_
 #error "Just trim is not included. Please include just_trim.hpp. https://github.com/Soldy/cpp_just_trim "
-#endif
+#else
 #ifndef __CPP_SIMPLE_INI_HPP_
 #define __CPP_SIMPLE_INI_HPP_
 #include <algorithm> 
@@ -62,4 +62,5 @@ std::map<std::string, std::string> read (std::string file_name){
 };
 }
 
+#endif
 #endif
