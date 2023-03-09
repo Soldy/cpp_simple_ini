@@ -1,0 +1,23 @@
+name: cpp CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    matrix:
+      os:
+        - ubuntu-latest
+      compiler:
+        - llvm
+        - gcc
+    steps:
+    - name: ${{ runner.os }}-${{ matrix.compiler }}
+      uses: actions/checkout@v2
+    - run: apt install -y ${{ matrix.compiler }} curl
+    - run: curl https://github.com/doctest/doctest/releases/download/v2.4.9/doctest.h > doctest.h
+    - run: g++ -o test test.cpp
+    - run: ./test
